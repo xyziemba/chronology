@@ -10,21 +10,27 @@
 #include <signal.h>
 #include <uv.h>
 #include <git2.h>
-#include <unistd.h>
 
-const char TEST_PATH[] = "/Users/xyziemba/proj/TimeTravel/touchy";
+const char TEST_PATH[] = "C:\\testPath";
 // TODO: in the future, we want this to be .timetravel
 const char STORAGE_DIR[] = ".git";
-#if WIN32
 const char DIRECTORY_CHAR = '\\';
-#else
-const char DIRECTORY_CHAR = '/';
-#endif
 
 volatile sig_atomic_t g_continueLoop = 1;
 uv_loop_t g_mainLoop; // set once at the beginning of the program
 const char *g_gitDir = NULL;
 const git_repository *g_gitRepo;
+
+int isPathInStorageDirectory(const char *path);
+void fs_event_callback(uv_fs_event_t *handle, const char *filename, int events,
+                       int status);
+int _file_exists(const char *fileName);
+int checkDirAndStartupGit(git_repository **out, const char *directory);
+int commitAllToRepository(git_repository *repo, const char *message);
+int main(int argc, char const *argv[]);
+
+#define FILE_EXIST(str) _file_exists(str) >= 0
+#define FILE_EXIST_NOT(str) _file_exists(str) < 0
 
 /*
 void HandleSIGINT(int sig) {
@@ -86,9 +92,6 @@ int _file_exists(const char *fileName) {
     uv_fs_req_cleanup(&fileHandle);
     return 0;
 }
-
-#define FILE_EXIST(str) _file_exists(str) >= 0
-#define FILE_EXIST_NOT(str) _file_exists(str) < 0
 
 /**
  Finds the local repository for input watch directory.
