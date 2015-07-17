@@ -32,7 +32,13 @@ void HandleSIGINT(int sig) {
         g_continueLoop = 0;
 }*/
 
-int pathInStorageDir(const char *path) {
+/**
+ * Checks whether this path is in the storage directory.
+ * This is used to filter in fs_event_callback.
+ * @param path Path to check
+ * @return 0 if not present, anything else if present
+ */
+int isPathInStorageDirectory(const char *path) {
     char *loc = strstr(path, STORAGE_DIR);
     return path == loc;
 }
@@ -53,7 +59,7 @@ void fs_event_callback(uv_fs_event_t *handle, const char *filename, int events,
 
     fprintf(stdout, " %s\n", filename ? filename : "");
 
-    if (!pathInStorageDir(filename)) {
+    if (!isPathInStorageDirectory(filename)) {
         commitAllToRepository(g_gitRepo, "TimeTravel record");
     }
 }
