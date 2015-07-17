@@ -11,10 +11,15 @@
 #include <uv.h>
 #include <git2.h>
 
-const char TEST_PATH[] = "C:\\testPath";
 // TODO: in the future, we want this to be .timetravel
 const char STORAGE_DIR[] = ".git";
+#if WIN32
+const char TEST_PATH [] = "C:\\testPath";
 const char DIRECTORY_CHAR = '\\';
+#else
+const char TEST_PATH[] = "/Users/xyziemba/proj/TimeTravel/touchy";
+const char DIRECTORY_CHAR = '/';
+#endif
 
 volatile sig_atomic_t g_continueLoop = 1;
 uv_loop_t g_mainLoop; // set once at the beginning of the program
