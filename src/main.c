@@ -14,7 +14,7 @@
 // TODO: in the future, we want this to be .timetravel
 const char STORAGE_DIR[] = ".git";
 #if WIN32
-const char TEST_PATH [] = "C:\\testPath";
+const char TEST_PATH[] = "C:\\testPath";
 const char DIRECTORY_CHAR = '\\';
 #else
 const char TEST_PATH[] = "/Users/xyziemba/proj/TimeTravel/touchy";
@@ -152,7 +152,7 @@ int checkDirAndStartupGit(git_repository **out, const char *directory) {
  * @return 0 if OK, negative value if failed
  */
 int commitAllToRepository(git_repository *repo, const char *message) {
-	git_index *index = NULL;
+    git_index *index = NULL;
 
     if (git_repository_index(&index, repo) < 0) {
         printf("[commitAllToRepository] Failed to get index.\n");
@@ -190,14 +190,14 @@ int commitAllToRepository(git_repository *repo, const char *message) {
     }
 
     // get tree itself
-	git_tree *tree = NULL;
+    git_tree *tree = NULL;
     if (git_tree_lookup(&tree, repo, &tree_oid) < 0) {
         printf("[commitAllToRepository] Failed to get tree from oid.\n");
         return -4;
     }
 
     // create signature
-	git_signature *sig = NULL;
+    git_signature *sig = NULL;
     if (git_signature_now(&sig, "TimeTravel", "internal@timetravel.io") < 0) {
         printf("[commitAllToRepository] Failed to create signature.\n");
         return -5;
@@ -222,7 +222,7 @@ int commitAllToRepository(git_repository *repo, const char *message) {
     }
 
     // lookup commit for that oid unless it's the zero OID
-	git_commit *last_commit = NULL;
+    git_commit *last_commit = NULL;
     if (!headNotFound) {
         if (git_commit_lookup(&last_commit, repo, &headOid) < 0) {
             printf("[commitAllToRepository] Failed to get commit from HEAD "
@@ -245,10 +245,14 @@ int commitAllToRepository(git_repository *repo, const char *message) {
     }
 
     // cleanup
-    if (index) git_index_free(index);
-    if (tree) git_tree_free(tree);
-    if (sig) git_signature_free(sig);
-    if (last_commit) git_commit_free(last_commit);
+    if (index)
+        git_index_free(index);
+    if (tree)
+        git_tree_free(tree);
+    if (sig)
+        git_signature_free(sig);
+    if (last_commit)
+        git_commit_free(last_commit);
 
     return 0;
 }
