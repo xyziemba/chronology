@@ -170,7 +170,7 @@ int commitAllToRepository(git_repository *repo, const char *message) {
     if (git_index_add_all(
             index, &gitStrArrayWithWildcard,
             GIT_INDEX_ADD_DISABLE_PATHSPEC_MATCH /* no .gitignore */, NULL,
-            NULL)) {
+            NULL) < 0) {
         printf(
             "[commitAllToRepository] Failed to commit all files to index.\n");
         return -2;
