@@ -24,7 +24,7 @@ const char DIRECTORY_CHAR = '/';
 volatile sig_atomic_t g_continueLoop = 1;
 uv_loop_t g_mainLoop; // set once at the beginning of the program
 const char *g_gitDir = NULL;
-const git_repository *g_gitRepo;
+git_repository *g_gitRepo;
 
 int isPathInStorageDirectory(const char *path);
 void fs_event_callback(uv_fs_event_t *handle, const char *filename, int events,
