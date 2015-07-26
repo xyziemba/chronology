@@ -1,4 +1,7 @@
-import config
+#!/usr/bin/env python
+
+import timetravel
+from timetravel import config
 import os
 import signal
 import argparse
@@ -7,7 +10,7 @@ from subprocess import PIPE
 import sys
 
 parser = argparse.ArgumentParser(
-    prog="timetravel",
+    prog="timetravel.py",
     description="Control the TimeTravel daemon")
 parser.add_argument("command",
                     choices=['start', 'stop',
@@ -18,6 +21,7 @@ args = parser.parse_args()
 def start():
     if config.getTimeTravelPid() is not None:
         print "Daemon already running"
+        return
     p = psutil.Popen([sys.executable, findDaemonFile()], stdout=PIPE)
     print "Started daemon with PID", p.pid
 
@@ -61,9 +65,8 @@ def removeDir():
 
 
 def findDaemonFile():
-    myPath = os.path.abspath(__file__)
-    myDir = os.path.dirname(myPath)
-    daemonFilePath = os.path.join(myDir, "timetravel_daemon.py")
+    timetravelPackageDir = os.path.dirname(timetravel.__file__)
+    daemonFilePath = os.path.join(timetravelPackageDir, "timetravel_daemon.py")
 
     return daemonFilePath
 
