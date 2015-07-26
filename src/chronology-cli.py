@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import timetravel
-from timetravel import config
+import chronology
+from chronology import config
 import os
 import signal
 import argparse
@@ -10,8 +10,8 @@ from subprocess import PIPE
 import sys
 
 parser = argparse.ArgumentParser(
-    prog="timetravel.py",
-    description="Control the TimeTravel daemon")
+    prog="chronology.py",
+    description="Control the Chronology daemon")
 parser.add_argument("command",
                     choices=['start', 'stop',
                              'info', 'add-dir', 'remove-dir'])
@@ -19,7 +19,7 @@ args = parser.parse_args()
 
 
 def start():
-    if config.getTimeTravelPid() is not None:
+    if config.getChronologyPid() is not None:
         print "Daemon already running"
         return
     p = psutil.Popen([sys.executable, findDaemonFile()], stdout=PIPE)
@@ -27,7 +27,7 @@ def start():
 
 
 def stop():
-    pid = config.getTimeTravelPid()
+    pid = config.getChronologyPid()
     if pid is None:
         print "Daemon is not running"
         return
@@ -47,7 +47,7 @@ def stop():
 
 
 def info():
-    pid = config.getTimeTravelPid()
+    pid = config.getChronologyPid()
 
     if pid is None:
         print "Daemon is not running"
@@ -65,8 +65,8 @@ def removeDir():
 
 
 def findDaemonFile():
-    timetravelPackageDir = os.path.dirname(timetravel.__file__)
-    daemonFilePath = os.path.join(timetravelPackageDir, "timetravel_daemon.py")
+    chronologyPackageDir = os.path.dirname(chronology.__file__)
+    daemonFilePath = os.path.join(chronologyPackageDir, "chronology_daemon.py")
 
     return daemonFilePath
 

@@ -2,12 +2,12 @@
 
 from distutils.core import setup
 
-setup(name='timetravel',
+setup(name='chronology',
       version='0.0.1',
       description='File watcher for git repositories',
       author='Xy Ziemba',
       author_email='xy.ziemba@gmail.com',
-      url='https://bitbucket.org/xyziemba/timetravel',
-      scripts=['src/timetravel-cli.py'],
-      packages=['timetravel'],
+      url='https://bitbucket.org/xyziemba/chronology',
+      scripts=['src/chronology-cli.py'],
+      packages=['chronology'],
       package_dir={'': 'src'})

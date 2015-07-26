@@ -2,7 +2,7 @@ import pygit2
 import pyuv
 
 
-REF_PREFIX = "refs/timetravel/"
+REF_PREFIX = "refs/chronology/"
 
 
 class Watcher:
@@ -52,7 +52,7 @@ class Watcher:
             timeTravelRef = self._repo.create_reference(
                 timeTravelRefName, headLoc.get_object().id)
 
-        sig = pygit2.Signature("TimeTravel", "none@timetravel.io")
+        sig = pygit2.Signature("Chronology", "none@chronology.io")
         self._repo.create_commit(
             timeTravelRefName, sig, sig, "Time!\n",
             new_tree, [timeTravelRef.target])

@@ -2,8 +2,8 @@ import os
 import psutil
 
 # use expanduser to resolve ~ in a platform-independent way
-watchdirFile = os.path.expanduser("~/.timetravel/watchdirs")
-pidFile = os.path.expanduser("~/.timetravel/timetravel.pid")
+watchdirFile = os.path.expanduser("~/.chronology/watchdirs")
+pidFile = os.path.expanduser("~/.chronology/chronology.pid")
 
 
 def getWatchedFiles():
@@ -25,7 +25,7 @@ def getWatchedFiles():
     return watchedFiles
 
 
-def getTimeTravelPid():
+def getChronologyPid():
     if not os.path.exists(pidFile):
         return None
 
@@ -38,7 +38,7 @@ def addDirToWatch(dir):
 
 
 def isDaemonRunning():
-    pid = getTimeTravelPid()
+    pid = getChronologyPid()
 
     if pid is None:
         return False
@@ -50,4 +50,4 @@ def isDaemonRunning():
 
     cmdline = proc.cmdline()
 
-    return "timetravel_daemon.py" in cmdline[1]
+    return "chronology_daemon.py" in cmdline[1]
