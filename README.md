@@ -9,15 +9,17 @@ Chronology also records all your work, as you do it, in almost real time. You ca
 ### Dependencies
 
 * Python 2.7 – Not tested with anything <2.7
-* OS X or Linux. Windows is coming later.
+* OS X. Windows and Linux are coming later.
 * pyuv, pygit2, psutil
 
 #### OS X
 
-	brew tap xyziemba\chronology
+	brew tap xyziemba/brew
 	brew install chronology
 
 #### Linux
+
+**NOT SUPPORTED YET**
 
 	pip install pyuv
 	pip install pygit2
