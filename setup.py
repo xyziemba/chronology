@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='timetravel',
-      version='0.1',
+      version='0.0.1',
       description='File watcher for git repositories',
       author='Xy Ziemba',
       author_email='xy.ziemba@gmail.com',
