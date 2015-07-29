@@ -83,6 +83,10 @@ def addDir():
         print "Unable to find %s" % newDir
         return
 
+    watchdirFileDir = os.path.dirname(config.watchdirFile)
+    if not os.path.exists(watchdirFileDir):
+        os.mkdir(watchdirFileDir)
+
     with open(config.watchdirFile, 'a+') as f:
         f.write("\n"+newDir+"\n")
 
