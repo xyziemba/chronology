@@ -3,8 +3,8 @@ python:
   - "2.7"
 # command to install dependencies
 install:
-  - "sudo apt-get update"
-  - "sudo apt-get install -y cmake build-essential curl python-dev libffi-dev libtool automake python-pip"
+  - "apt-get update"
+  - "apt-get install -y cmake build-essential curl python-dev libffi-dev libtool automake python-pip"
   - "curl -L -o libgit2-0.22.3.tar.gz https://github.com/libgit2/libgit2/archive/v0.22.3.tar.gz"
   - "tar xzf libgit2-0.22.3.tar.gz"
   - "pushd ."
@@ -12,8 +12,8 @@ install:
   - "mkdir build"
   - "cd build"
   - "cmake .. -DBUILD_CLAR=NO -DCMAKE_BUILD_TYPE=Release"
-  - "sudo make install"
-  - "sudo ldconfig"
+  - "make install"
+  - "ldconfig"
   - "popd"
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt"
@@ -21,3 +21,4 @@ install:
   - "pip install ."
 # command to run tests
 script: py.test
+sudo: false
