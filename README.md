@@ -1,5 +1,7 @@
 # Chronology
 
+[![Build Status](https://travis-ci.org/xyziemba/chronology.svg?branch=test)](https://travis-ci.org/xyziemba/chronology)
+
 Chronology watches and records every change you make to a file in a Git repository. It's perpetual undo – go back to two hours ago or two days ago.
 
 Chronology also records all your work, as you do it, in almost real time. You can go analyze that data to understand *how* you built a product, *why* you made changes, and *what* you can do to become more productive. Tools to help analyze your edit history are the next step after Chronology.
