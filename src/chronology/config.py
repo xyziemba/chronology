@@ -14,6 +14,8 @@ def getWatchedFiles():
     with open(watchdirFile, 'r') as f:
         for line in f:
             line = line.strip()
+            if line == "" or line.startswith("#"):
+                continue
             gitDir = os.path.join(line, ".git")
             if not os.path.exists(gitDir):
                 raise Exception("%s is not a valid git repository" % line)
