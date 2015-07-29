@@ -15,6 +15,9 @@ env:
   global:
     - LIBGIT2=$HOME/libgit2
     - LD_LIBRARY_PATH=$LIBGIT2/lib
+cache:
+  directories:
+    - $LIBGIT2
 before_install:
   - bash local_libgit2.sh
 install:
@@ -22,6 +25,5 @@ install:
   - "pip install -r requirements.txt"
   - "pip install pytest"
   - "pip install ."
-# command to run tests
 script: py.test
 sudo: false
