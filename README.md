@@ -29,14 +29,14 @@ Chronology also records all your work, as you do it, in almost real time. You ca
 ## Usage
 
 	# add a directory to watch
-	chronology add my_project_directory
+	chronology.py add-dir my_project_directory
 	
 	# start chronology daemon
-	chronology start
+	chronology.py start
 	
 	# when you're done...
 	# shutdown chronology
-	chronology stop
+	chronology.py stop
 	
 ## FAQ
 
