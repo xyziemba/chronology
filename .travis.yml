@@ -1,10 +1,17 @@
 language: python
 python:
   - "2.7"
-# command to install dependencies
+addons:
+  apt:
+    packages:
+      - cmake
+      - build-essential
+      - curl
+      - python-dev
+      - libffi-dev
+      - libtool
+      - automake
 install:
-  - "apt-get update"
-  - "apt-get install -y cmake build-essential curl python-dev libffi-dev libtool automake python-pip"
   - "curl -L -o libgit2-0.22.3.tar.gz https://github.com/libgit2/libgit2/archive/v0.22.3.tar.gz"
   - "tar xzf libgit2-0.22.3.tar.gz"
   - "pushd ."
