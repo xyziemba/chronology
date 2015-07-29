@@ -1,0 +1,3 @@
+pyuv
+pygit2
+psutil
