@@ -11,17 +11,13 @@ addons:
       - libffi-dev
       - libtool
       - automake
+env:
+  global:
+    - LIBGIT2=$HOME/libgit2
+    - LD_LIBRARY_PATH=$LIBGIT2/lib
+before_install:
+  - bash local_libgit2.sh
 install:
-  - "curl -L -o libgit2-0.22.3.tar.gz https://github.com/libgit2/libgit2/archive/v0.22.3.tar.gz"
-  - "tar xzf libgit2-0.22.3.tar.gz"
-  - "pushd ."
-  - "cd libgit2-0.22.3"
-  - "mkdir build"
-  - "cd build"
-  - "cmake .. -DBUILD_CLAR=NO -DCMAKE_BUILD_TYPE=Release"
-  - "make install"
-  - "ldconfig"
-  - "popd"
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt"
   - "pip install pytest"
