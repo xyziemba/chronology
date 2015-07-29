@@ -11,14 +11,23 @@ import sys
 
 parser = argparse.ArgumentParser(
     prog="chronology.py",
-    description="Control the Chronology daemon")
+    description="Control the Chronology daemon\nFor more info," +
+    " go to https://github.com/xyziemba/chronology",)
 parser.add_argument("command",
-                    choices=['start', 'stop',
-                             'info', 'add-dir', 'remove-dir'])
+                    choices=['start', 'stop', 'info',
+                             'add-dir', 'remove-dir'])
+parser.add_argument("-d", "--directory",
+                    help="Specify a directory for add-dir or remove-dir")
 args = parser.parse_args()
 
 
 def start():
+    if not os.path.exists(config.watchdirFile):
+        print "No file found at %s" % config.watchdirFile
+        print "Not configured to watch anything."
+        print
+        print "Run: chronology-cli.py add-dir -d <directory to watch>"
+        return
     if config.getChronologyPid() is not None:
         print "Daemon already running"
         return
@@ -50,13 +59,37 @@ def info():
     pid = config.getChronologyPid()
 
     if pid is None:
-        print "Daemon is not running"
+        print "Status: STOPPED\nDaemon is not running"
     else:
-        print "Daemon is running with PID", pid
+        print "Status: RUNNING\nDaemon is running with PID", pid
+
+    print
+
+    if os.path.exists(config.watchdirFile):
+        print "Watch dirs:"
+        for f in config.getWatchedFiles():
+            print "\t", f
+    else:
+        print "Not configured to watch anything."
+        print
+        print "Run: chronology-cli.py add-dir -d <directory to watch>"
 
 
 def addDir():
-    pass
+    # validate dir
+    newDir = os.path.abspath(args.directory)
+
+    if not os.path.exists(newDir):
+        print "Unable to find %s" % newDir
+        return
+
+    with open(config.watchdirFile, 'a+') as f:
+        f.write("\n"+newDir+"\n")
+
+    pid = config.getChronologyPid()
+    if pid is not None:
+        stop()
+        start()
 
 
 def removeDir():
@@ -80,7 +113,15 @@ elif args.command == 'info':
     info()
 
 elif args.command == 'add-dir':
+    if args.directory == None:
+        parser.print_usage()
+        print "\tadd-dir command requires specifying a directory with -d"
+        sys.exit(0)
     addDir()
 
 elif args.command == 'remove-dir':
+    if args.directory == None:
+        parser.print_usage()
+        print "\tremove-dir command requires specifying a directory with -d"
+        sys.exit(0)
     removeDir()
