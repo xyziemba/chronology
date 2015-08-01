@@ -34,7 +34,7 @@ def main():
             parser.print_usage()
             print "\tadd-dir command requires specifying a directory with -d"
             sys.exit(0)
-        addDir()
+        addDir(args.directory)
 
     elif args.command == 'remove-dir':
         if args.directory == None:
@@ -42,7 +42,7 @@ def main():
             print "\tremove-dir command requires specifying a "
             "directory with -d"
             sys.exit(0)
-        removeDir()
+        removeDir(args.directory)
 
 
 def start():
@@ -99,9 +99,9 @@ def info():
         print "Run: chronology-cli.py add-dir -d <directory to watch>"
 
 
-def addDir():
+def addDir(directory):
     # validate dir
-    newDir = os.path.abspath(args.directory)
+    newDir = os.path.abspath(directory)
 
     if not os.path.exists(newDir):
         print "Unable to find %s" % newDir
@@ -120,7 +120,7 @@ def addDir():
         start()
 
 
-def removeDir():
+def removeDir(directory):
     raise Exception("Not yet implemented. Edit %s by hand."
                     % config.watchdirFile)
 
