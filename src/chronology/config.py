@@ -2,54 +2,87 @@ import os
 import psutil
 
 # use expanduser to resolve ~ in a platform-independent way
-watchdirFile = os.path.expanduser("~/.chronology/watchdirs")
-pidFile = os.path.expanduser("~/.chronology/chronology.pid")
+defaultWatchdirFile = os.path.expanduser("~/.chronology/watchdirs")
+defaultPidFile = os.path.expanduser("~/.chronology/chronology.pid")
 
 
-def getWatchedFiles():
-    if not os.path.exists(watchdirFile):
-        raise Exception("Watch dir list not found at %s" % watchdirFile)
+class ConfigFile(object):
 
-    watchedFiles = list()
-    with open(watchdirFile, 'r') as f:
-        for line in f:
-            line = line.strip()
-            if line == "" or line.startswith("#"):
-                continue
-            gitDir = os.path.join(line, ".git")
-            if not os.path.exists(gitDir):
-                raise Exception("%s is not a valid git repository" % line)
-            watchedFiles.append(line)
+    def __init__(self, filename):
+        self.filename = filename
 
-    if len(watchedFiles) == 0:
-        raise Exception("%s contains no watch directories.")
-
-    return watchedFiles
+    def doesFileExist(self):
+        return os.path.exists(self.filename)
 
 
-def getChronologyPid():
-    if not os.path.exists(pidFile):
-        return None
+class PidConfig(ConfigFile):
 
-    with open(pidFile, 'r') as f:
-        return int(f.readline().strip())
+    def __init__(self, pidFile=defaultPidFile):
+        super(PidConfig, self).__init__(pidFile)
+        self.pidFile = pidFile
+
+    def isDaemonRunning(self):
+        pid = self.getChronologyPid()
+
+        if pid is None:
+            return False
+
+        try:
+            proc = psutil.Process(pid)
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            return False
+
+        cmdline = proc.cmdline()
+
+        return "chronology_daemon.py" in cmdline[1]
+
+    def getChronologyPid(self):
+        if not os.path.exists(self.pidFile):
+            return None
+
+        with open(self.pidFile, 'r') as f:
+            return int(f.readline().strip())
+
+    def writeSelfAsPid(self):
+        if self.isDaemonRunning():
+            raise Exception("Will not delete PID of currently running daemon.")
+        with open(self.pidFile, 'w') as f:
+            f.writelines(str(os.getpid()))
+
+    def deletePidFile(self):
+        os.remove(self.pidFile)
 
 
-def addDirToWatch(dir):
-    raise Exception("Not yet implemented.")
+class WatchdirConfig(ConfigFile):
 
+    def __init__(self, watchdirFile=defaultWatchdirFile):
+        super(WatchdirConfig, self).__init__(watchdirFile)
+        self.watchdirFile = watchdirFile
 
-def isDaemonRunning():
-    pid = getChronologyPid()
+    def getWatchedFiles(self):
+        if not os.path.exists(self.watchdirFile):
+            raise Exception("Watch dir set not found at %s" %
+                            self.watchdirFile)
 
-    if pid is None:
-        return False
+        watchedFiles = set()  # set means we'll skip duplicates
+        with open(self.watchdirFile, 'r') as f:
+            for line in f:
+                line = line.strip().rstrip(
+                    os.sep)  # remove a trailing / or \
+                if line == "" or line.startswith("#"):
+                    continue
+                watchedFiles.add(line)
 
-    try:
-        proc = psutil.Process(pid)
-    except (psutil.NoSuchProcess, psutil.AccessDenied):
-        return False
+        if len(watchedFiles) == 0:
+            raise Exception("%s contains no watch directories."
+                            % self.watchdirFile)
 
-    cmdline = proc.cmdline()
+        return watchedFiles
 
-    return "chronology_daemon.py" in cmdline[1]
+    def addDirToWatch(self, directory):
+        watchdirFileDirectory = os.path.dirname(self.watchdirFile)
+        if not os.path.exists(watchdirFileDirectory):
+            os.mkdir(watchdirFileDirectory)
+
+        with open(self.watchdirFile, 'a+') as f:
+            f.write("\n" + directory + "\n")

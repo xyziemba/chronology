@@ -5,7 +5,7 @@ import pyuv
 REF_PREFIX = "refs/chronology/"
 
 
-class Watcher:
+class Watcher(object):
 
     enabled = True  # swap to false when fsWatcherHandle is stopped
 
