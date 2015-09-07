@@ -8,9 +8,9 @@ if [ -z ${LIBGIT2+x} ]; then
 fi
 
 if [ ! -d "$LIBGIT2/lib" ]; then
-	curl -L -o libgit2-0.22.3.tar.gz https://github.com/libgit2/libgit2/archive/v0.22.3.tar.gz;
-	tar xzf libgit2-0.22.3.tar.gz;
-	cd libgit2-0.22.3;
+	curl -L -o libgit2-0.23.0.tar.gz https://github.com/libgit2/libgit2/archive/v0.23.0.tar.gz;
+	tar xzf libgit2-0.23.0.tar.gz;
+	cd libgit2-0.23.0;
 	mkdir build;
 	cd build;
 	cmake .. -DBUILD_CLAR=NO -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$LIBGIT2;

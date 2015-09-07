@@ -22,8 +22,8 @@ before_install:
   - bash local_libgit2.sh
 install:
   - "pip install --upgrade pip"
-  - "pip install -r requirements.txt"
-  - "pip install pytest pytest-cov"
+  - "pip install -U -r requirements.txt"
+  - "pip install -U pytest pytest-cov"
   - "pip install ."
 script: py.test --cov=chronology
 sudo: false
