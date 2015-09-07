@@ -16,30 +16,30 @@ Chronology also records all your work, as you do it, in almost real time. You ca
 
 #### OS X
 
-	brew tap xyziemba/brew
-	brew install chronology
+    brew tap xyziemba/brew
+    brew install chronology
 
 #### Linux
 
 **NOT SUPPORTED YET**
 
-	pip install pyuv
-	pip install pygit2
-	git clone ...
-	# TODO...
+    pip install pyuv
+    pip install pygit2
+    git clone ...
+    # TODO...
 
 ## Usage
 
-	# add a directory to watch
-	chronology.py add-dir my_project_directory
-	
-	# start chronology daemon
-	chronology.py start
-	
-	# when you're done...
-	# shutdown chronology
-	chronology.py stop
-	
+    # add a directory to watch
+    chronology.py add-dir my_project_directory
+    
+    # start chronology daemon
+    chronology.py start
+    
+    # when you're done...
+    # shutdown chronology
+    chronology.py stop
+    
 ## FAQ
 
 #### What's the roadmap going forward?
@@ -52,11 +52,30 @@ Chronology adds its own set of references and objects into your Git repository. 
 
 Chronology's references all have the form `refs/chronology/<sha1>`. You can delete all of them by running the following command in a bash shell:
 
-	git show-ref | grep refs/chronology/.*$ -o | xargs git update-ref -d
+    git show-ref | grep refs/chronology/.*$ -o | xargs git update-ref -d
 
 Extra git objects will automatically get cleaned up the next time your repository is optimized, but you can force that by running:
 
-	git gc
+    git gc
+
+## Development
+
+Setting up your environment:
+
+    # install libgit2
+    brew install libgit2 # on mac
+    cat requirements.txt | xargs pip install
+
+If pygit2 fails to build, you probably have a version mismatch
+between the version of pygit2 and libgit2. Read about installing
+pygit2 at http://www.pygit2.org/install.html.
+
+Run tests with tox:
+
+    pip install tox
+    tox
+
+
 
 ## Feedback
 
