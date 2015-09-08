@@ -2,6 +2,8 @@ from chronology import cli, config
 import time
 import os
 import pytest
+import sys
+import psutil
 
 from test_common import *
 
@@ -50,12 +52,23 @@ class TestPidFile(object):
         pidConfig.deletePidFile()
         assert pidConfig.getChronologyPid() is None
 
-    # Todo: run a test with a fixture that:
-    # 1. spins up chronology
-    # 2. checks that the daemon is correctly reported
-    # def test_withRun(self, repoWithOneCommit):
-    #     pass
+    def test_spinup(self, oneRepoOneCommit, monkeypatch):
+        monkeypatch.setattr(sys, "argv", ["chronology.py", "start"])
+        client = cli.Client()
 
+        time.sleep(1)
+        pidConfig = config.PidConfig()
+        assert pidConfig.isDaemonRunning()
+        pid = pidConfig.getChronologyPid()
+
+        process = psutil.Process(pid=pid)
+        assert "chronology_daemon.py" in process.cmdline()[1]
+        assert pidConfig.filename in process.cmdline()
+
+        monkeypatch.setattr(sys, "argv", ["chronology.py", "stop"])
+        client = cli.Client()
+        process.wait(timeout=1)
+        assert not pidConfig.isDaemonRunning()
 
 class TestWatchdirConfig(object):
     watchdirConfigFileName = "watchdirs"

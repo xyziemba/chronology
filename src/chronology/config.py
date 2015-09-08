@@ -17,7 +17,11 @@ class ConfigFile(object):
 
 class PidConfig(ConfigFile):
 
-    def __init__(self, pidFile=defaultPidFile):
+    def __init__(self, pidFile=None):
+        # Arg pidFile is late-bound such that the test
+        # infrastructure can monkeypatch defaultPidFile
+        if not pidFile:
+            pidFile = defaultPidFile
         super(PidConfig, self).__init__(pidFile)
         self.pidFile = pidFile
 
@@ -55,7 +59,11 @@ class PidConfig(ConfigFile):
 
 class WatchdirConfig(ConfigFile):
 
-    def __init__(self, watchdirFile=defaultWatchdirFile):
+    def __init__(self, watchdirFile=None):
+        # Arg watchdirFile is late-bound such that the test
+        # infrastructure can monkeypatch defaultWatchdirFile
+        if not watchdirFile:
+            watchdirFile = defaultWatchdirFile
         super(WatchdirConfig, self).__init__(watchdirFile)
         self.watchdirFile = watchdirFile
 
