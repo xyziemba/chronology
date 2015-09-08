@@ -35,7 +35,7 @@ def oneRepoOneCommit(tmpdir):
     repo.index.write()
     new_tree = repo.index.write_tree()
 
-    sig = pygit2.Signature("Test Fixture", "test-fixture@chronology.io")
+    sig = pygit2.Signature("Test Fixture", "test-fixture@chronology")
     repo.create_commit(
         "refs/heads/master", sig, sig, "Initial commit for fixture\n",
         new_tree, [])

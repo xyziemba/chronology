@@ -52,7 +52,7 @@ class Watcher(object):
             timeTravelRef = self._repo.create_reference(
                 timeTravelRefName, headLoc.get_object().id)
 
-        sig = pygit2.Signature("Chronology", "none@chronology.io")
+        sig = pygit2.Signature("Chronology", "none@chronology")
         self._repo.create_commit(
             timeTravelRefName, sig, sig, "Time!\n",
             new_tree, [timeTravelRef.target])
