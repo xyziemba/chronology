@@ -34,7 +34,7 @@ class Client(object):
             self.pidConfig = config.PidConfig()
 
         if args.watchdirFile:
-            self.watchdirConfig = config.WatchdirConfig(args.pidFile)
+            self.watchdirConfig = config.WatchdirConfig(args.watchdirFile)
         else:
             self.watchdirConfig = config.WatchdirConfig()
 
@@ -73,7 +73,15 @@ class Client(object):
         if self.pidConfig.isDaemonRunning():
             print "Daemon already running"
             return
-        p = psutil.Popen([sys.executable, self._findDaemonFile()], stdout=PIPE)
+
+        # Always pass the config file parameters. This makes E2E testing easier
+        invocation = [sys.executable, self._findDaemonFile()]
+        invocation.append('-p')
+        invocation.append(self.pidConfig.filename)
+        invocation.append('-w')
+        invocation.append(self.watchdirConfig.filename)
+
+        p = psutil.Popen(invocation, stdout=PIPE)
         print "Started daemon with PID", p.pid
 
     def _stop(self):
@@ -118,7 +126,7 @@ class Client(object):
 
     def _addDir(self):
         # validate dir
-        newDir = os.path.abspath(args.directory)
+        newDir = os.path.abspath(self.args.directory)
 
         if not os.path.exists(newDir):
             print "Unable to find %s" % newDir

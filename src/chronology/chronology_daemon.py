@@ -43,7 +43,7 @@ def main():
         pidConfig = config.PidConfig()
 
     if args.watchdirFile:
-        watchdirConfig = config.WatchdirConfig(args.pidFile)
+        watchdirConfig = config.WatchdirConfig(args.watchdirFile)
     else:
         watchdirConfig = config.WatchdirConfig()
 
