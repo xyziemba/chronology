@@ -56,7 +56,7 @@ class TestPidFile(object):
         monkeypatch.setattr(sys, "argv", ["chronology.py", "start"])
         client = cli.Client()
 
-        time.sleep(1)
+        time.sleep(1)  # wait to ensure the daemon doesn't crash on startup
         pidConfig = config.PidConfig()
         assert pidConfig.isDaemonRunning()
         pid = pidConfig.getChronologyPid()
@@ -69,6 +69,7 @@ class TestPidFile(object):
         client = cli.Client()
         process.wait(timeout=1)
         assert not pidConfig.isDaemonRunning()
+
 
 class TestWatchdirConfig(object):
     watchdirConfigFileName = "watchdirs"

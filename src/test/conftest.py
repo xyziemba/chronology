@@ -5,6 +5,7 @@ import pygit2
 from chronology import config
 
 from test_common import *
+from repo import *
 
 repoDirName = "repo"
 configDirName = "config"
@@ -26,22 +27,9 @@ def oneRepoOneCommit(tmpdir):
     sTmpdir = str(tmpdir)
     repoDir = os.path.join(sTmpdir, repoDirName)
 
-    repo = pygit2.init_repository(repoDir)
-
-    testFile = os.path.join(repoDir, "foo")
-    createFileWithContent(testFile, "This file is named foo.")
-
-    repo.index.add_all()
-    repo.index.write()
-    new_tree = repo.index.write_tree()
-
-    sig = pygit2.Signature("Test Fixture", "test-fixture@chronology")
-    repo.create_commit(
-        "refs/heads/master", sig, sig, "Initial commit for fixture\n",
-        new_tree, [])
+    repo = RepoBuilder(repoDir).addCommits(1)
 
     watchdirConfig = config.WatchdirConfig()
     watchdirConfig.addDirToWatch(repoDir)
 
-    return repoDir
-
+    return [repo]
