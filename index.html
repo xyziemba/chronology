@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Chronology by xyziemba</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Chronology</h1>
+        <p></p>
+
+        <p class="view"><a href="https://github.com/xyziemba/chronology">View the Project on GitHub <small>xyziemba/chronology</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/xyziemba/chronology/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/xyziemba/chronology/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/xyziemba/chronology">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="chronology" class="anchor" href="#chronology" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chronology</h1>
+
+<p><a href="https://travis-ci.org/xyziemba/chronology"><img src="https://travis-ci.org/xyziemba/chronology.svg?branch=test" alt="Build Status"></a></p>
+
+<p>Chronology watches and records every change you make to a file in a Git repository. It's perpetual undo – go back to two hours ago or two days ago.</p>
+
+<p>Chronology also records all your work, as you do it, in almost real time. You can go analyze that data to understand <em>how</em> you built a product, <em>why</em> you made changes, and <em>what</em> you can do to become more productive. Tools to help analyze your edit history are the next step after Chronology.</p>
+
+<h2>
+<a id="installing" class="anchor" href="#installing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing</h2>
+
+<h3>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h3>
+
+<ul>
+<li>Python 2.7 – Not tested with anything &lt;2.7</li>
+<li>OS X. Windows and Linux are coming later.</li>
+<li>pyuv, pygit2, psutil</li>
+</ul>
+
+<h4>
+<a id="os-x" class="anchor" href="#os-x" aria-hidden="true"><span class="octicon octicon-link"></span></a>OS X</h4>
+
+<pre><code>brew tap xyziemba/brew
+brew install chronology
+</code></pre>
+
+<h4>
+<a id="linux" class="anchor" href="#linux" aria-hidden="true"><span class="octicon octicon-link"></span></a>Linux</h4>
+
+<p><strong>NOT SUPPORTED YET</strong></p>
+
+<pre><code>pip install pyuv
+pip install pygit2
+git clone ...
+# TODO...
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<pre><code># add a directory to watch
+chronology.py add-dir my_project_directory
+
+# start chronology daemon
+chronology.py start
+
+# when you're done...
+# shutdown chronology
+chronology.py stop
+</code></pre>
+
+<h2>
+<a id="faq" class="anchor" href="#faq" aria-hidden="true"><span class="octicon octicon-link"></span></a>FAQ</h2>
+
+<h4>
+<a id="whats-the-roadmap-going-forward" class="anchor" href="#whats-the-roadmap-going-forward" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's the roadmap going forward?</h4>
+
+<p>I'm still figuring that out. :)</p>
+
+<h4>
+<a id="how-do-i-undo-everything-that-chronology-did-to-my-repo" class="anchor" href="#how-do-i-undo-everything-that-chronology-did-to-my-repo" aria-hidden="true"><span class="octicon octicon-link"></span></a>How do I undo everything that Chronology did to my repo?</h4>
+
+<p>Chronology adds its own set of references and objects into your Git repository. These take up space, but generally won't impact your repository.</p>
+
+<p>Chronology's references all have the form <code>refs/chronology/&lt;sha1&gt;</code>. You can delete all of them by running the following command in a bash shell:</p>
+
+<pre><code>git show-ref | grep refs/chronology/.*$ -o | xargs git update-ref -d
+</code></pre>
+
+<p>Extra git objects will automatically get cleaned up the next time your repository is optimized, but you can force that by running:</p>
+
+<pre><code>git gc
+</code></pre>
+
+<h2>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development</h2>
+
+<p>Setting up your environment:</p>
+
+<pre><code># install libgit2
+brew install libgit2 # on mac
+cat requirements.txt | xargs pip install
+</code></pre>
+
+<p>If pygit2 fails to build, you probably have a version mismatch
+between the version of pygit2 and libgit2. Read about installing
+pygit2 at <a href="http://www.pygit2.org/install.html">http://www.pygit2.org/install.html</a>.</p>
+
+<p>Run tests with tox:</p>
+
+<pre><code>pip install tox
+tox
+</code></pre>
+
+<h2>
+<a id="feedback" class="anchor" href="#feedback" aria-hidden="true"><span class="octicon octicon-link"></span></a>Feedback</h2>
+
+<p>Chronology is a rough draft right now. Please log issues to this repository, or send a pull request if you're feeling adventurous.</p>
+
+<p>I can also be reached by email at <a href="mailto:xy.ziemba@gmail.com">xy.ziemba@gmail.com</a>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/xyziemba">xyziemba</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
